@@ -57,22 +57,13 @@
       ext: 'png'
     }).addTo(map);
 
-    /* =====================
+var restaurant1 =['39.954838', '-75.193900','Sanki'];
+var restaurant2 =['39.948746', '-75.161936','Indeblue'];
+var restaurant3 =['39.950225', '-75.162066','Barbuzzo'];
+var restaurantData =[restaurant1,restaurant2,restaurant3];
 
-    Start code
-
-    ===================== */
-
-    L.marker([0, 0]).addTo(map);
-    L.marker([0, 0]).addTo(map);
-    L.marker([0, 0]).addTo(map);
-
-    /* =====================
-
-    End code
-
-    ===================== */
-
+for (i=0; i< restaurantData.length ; i++) {
+    L.marker([restaurantData[i][0], restaurantData[i][1]]).addTo(map).bindPopup(restaurantData[i][2]).openPopup();
     </script>
   </body>
 </html>
