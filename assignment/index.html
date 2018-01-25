@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <b>Health Center with Dental Services(Zip-code 19140 to 19149)</b>-Kefan Long's Second Assignment
     <!--stylesheet imports-->
     <link rel="stylesheet" href="leaflet.css" />
   </head>
@@ -20,7 +21,7 @@
     <script>
       var map = L.map('map', {
         center: [39.9522, -75.1639],
-        zoom: 14
+        zoom: 12
       });
       var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
         attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -41,33 +42,79 @@
 
        1. Log a series of arrays to the console that represents the health_centers dataset in array form. For example, [{'first': 1, 'second': 44}, {'first': 2, 'second': 12}] becomes [['first','second'],[1, 44],[2, 12]]
 
-       2. Put a marker on the map for each health center in the specified lat/lng coordinates with a popup (a simple text dialog) that shows that location's name when its marker is clicked.
-
-       EXTRA: Some of these locations offer dental services as well. Can you find some way to give dental locations a different icon? (Here's some relevant documentation: http://leafletjs.com/reference.html#icon)
-
-       Remember: functions are meant to facilitate code comprehension and reuse. Try to use them to organize your code.
       ===================== */
-
+      var jsonToCsv = function(json) {
+        var empty=[];
+        for(i=0;i<json.length;i++){
+          empty.push(Object.values(json[i]))
+        }
+        empty.unshift(Object.keys(json[json.length-1]));
+        var json = empty;
+        console.log(json);
+      };
 
       /* =====================
 
-      Start code
+       2. Put a marker on the map for each health center in the specified lat/lng coordinates with a popup (a simple text dialog) that shows that location's name when its marker is clicked.
+
+      ===================== */
+      var generation = function(json) {
+        var empty=[];
+        for(i=0;i<json.length;i++){
+          empty.push(Object.values(json[i]))
+        }
+        return empty;
+      };
+      newData = generation(healthCenters);
+      var targeted=[];
+      for(i=0; i < newData.length; i++) {
+        if (newData[i][5] > 19139 && newData[i][5] < 19150) {
+          targeted.push(newData[i]);
+        }
+      }
+      var addMarkers = function(map) {
+        for (i=0; i< targeted.length; i++) {
+          L.marker([targeted[i][1],targeted[i][0]]).addTo(map).bindPopup(targeted[i][3] + ' Address: ' + targeted[i][9] ).openPopup();
+        }
+      };
+
+      /* =====================
+       EXTRA: Some of these locations offer dental services as well. Can you find some way to give dental locations a different icon? (Here's some relevant documentation: http://leafletjs.com/reference.html#icon)
+
+       Remember: functions are meant to facilitate code comprehension and reuse. Try to use them to organize your code.
 
       ===================== */
 
-      var jsonToCsv = function(json) { console.log(json); };
+      var myIcon = L.icon({
+        iconUrl: 'tooth-icon.png',
+        iconSize: [30, 30],
+        iconAnchor: [16, 16],
+        popupAnchor: [-3, -10],
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94]
+      });
+
+      var dental = function(map) {
+        for (i=0; i< targeted.length; i++) {
+          if (targeted[i][8] !== "N/A") {
+          L.marker([targeted[i][1],targeted[i][0]], {icon: myIcon}).addTo(map).bindPopup('<b>Dental Service Here!</b>').openPopup();
+          }
+        }
+      };
 
 
-      var addMarkers = function(map) {};
+
+
+
+
 
       /* =====================
 
       End code
 
       ===================== */
-
-
       jsonToCsv(healthCenters);
+      dental(map);
       addMarkers(map);
     </script>
     <!--Your code ends here-->
